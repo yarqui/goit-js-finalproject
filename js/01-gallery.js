@@ -50,6 +50,9 @@ const handleImageClick = (e) => {
   }
 };
 
-gallery.insertAdjacentHTML("beforeend", createGalleryMarkup(galleryItems));
-
-gallery.addEventListener("click", handleImageClick);
+if (gallery) {
+  gallery.insertAdjacentHTML("beforeend", createGalleryMarkup(galleryItems));
+  gallery.addEventListener("click", handleImageClick);
+} else {
+  console.error("Gallery not found");
+}
