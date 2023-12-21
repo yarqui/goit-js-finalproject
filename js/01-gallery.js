@@ -29,26 +29,24 @@ const handleImageClick = (e) => {
     const instance = basicLightbox.create(
       `<img src="${imgLink}" width="800" height="600">`,
       {
-        onShow: () => {
-          document.addEventListener("keydown", onEscKey);
+        handler: null,
+        onShow(instance) {
+          this.handler = onEscKey.bind(instance);
+          document.addEventListener("keydown", this.handler);
         },
-        onClose: () => {
-          document.removeEventListener("keydown", onEscKey);
+        onClose() {
+          document.removeEventListener("keydown", this.handler);
         },
       }
     );
 
-    const onEscKey = (e) => {
-      const visible = basicLightbox.visible();
-
-      if (visible && e.code === "Escape") {
-        instance.close();
-      }
-    };
-
-    instance.show();
+    instance.show(instance);
   }
 };
+
+function onEscKey(e) {
+  if (e.code === "Escape") this.close();
+}
 
 if (gallery) {
   gallery.insertAdjacentHTML("beforeend", createGalleryMarkup(galleryItems));
